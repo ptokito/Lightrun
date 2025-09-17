@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightrun Demo - E-commerce Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0F1419 0%, #1a2332 50%, #2d3748 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .logo::before {
+            content: "⚡";
+            font-size: 1.8rem;
+        }
+
+        .demo-badge {
+            background: linear-gradient(135deg, #00d4ff 0%, #0066cc 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00d4ff 0%, #ffffff 50%, #00d4ff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradient 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #a0aec0;
+            margin-bottom: 2rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+
+        .products-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #0066cc, #00d4ff);
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .inventory {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.1);
+            color: #a0aec0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .order-form {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .quantity-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem;
+            color: white;
+            width: 80px;
+            text-align: center;
+        }
+
+        .order-btn {
+            background: linear-gradient(135deg, #00d4ff 0%, #0066cc 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .order-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .demo-controls {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .demo-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+            text-align: center;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .demo-btn.bug-trigger {
+            background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%);
+        }
+
+        .demo-btn.bug-trigger:hover {
+            box-shadow: 0 10px 25px rgba(255, 149, 0, 0.4);
+        }
+
+        .orders-section {
+            margin-top: 3rem;
+        }
+
+        .orders-list {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .order-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .order-total {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .status-indicator {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-width: 250px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-title {
+            color: #00d4ff;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00d4ff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .success {
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #a0aec0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Lightrun Demo Store</div>
+            <div class="demo-badge">TAM Interview Demo</div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1>E-commerce Platform</h1>
+            <p>Real-time debugging demonstration with intentional race conditions and pricing bugs</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-products">0</div>
+                <div class="stat-label">Products Available</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-orders">0</div>
+                <div class="stat-label">Orders Created</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-inventory">0</div>
+                <div class="stat-label">Total Inventory</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="revenue">$0</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+        </div>
+
+        <div class="demo-controls">
+            <div class="demo-title">🐛 Bug Demonstration Controls</div>
+            <div class="demo-buttons">
+                <button class="demo-btn" onclick="refreshData()">🔄 Refresh Data</button>
+                <button class="demo-btn bug-trigger" onclick="triggerRaceCondition()">⚡ Trigger Race Condition</button>
+                <button class="demo-btn bug-trigger" onclick="triggerPricingBug()">💰 Test Pricing Bug</button>
+                <button class="demo-btn" onclick="clearOrders()">🗑️ Clear Orders</button>
+            </div>
+        </div>
+
+        <section class="products-section">
+            <h2 class="section-title">Product Catalog</h2>
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <section class="orders-section">
+            <h2 class="section-title">Recent Orders</h2>
+            <div class="orders-list" id="orders-list">
+                <!-- Orders will be loaded here -->
+            </div>
+        </section>
+    </div>
+
+    <div class="status-indicator">
+        <div class="status-title">System Status</div>
+        <div id="status-content">
+            <div>✅ Application Running</div>
+            <div>🔗 API Connected</div>
+            <div>⚡ Lightrun Ready</div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Lightrun Demo Application - Showcasing real-time debugging capabilities</p>
+    </footer>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+        let products = [];
+        let orders = [];
+
+        // Initialize the application
+        async function init() {
+            await loadProducts();
+            await loadOrders();
+            updateStats();
+        }
+
+        // Load products from API
+        async function loadProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products`);
+                products = await response.json();
+                renderProducts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showStatus('Error loading products', 'error');
+            }
+        }
+
+        // Load orders from API
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${API_BASE}/orders`);
+                orders = await response.json();
+                renderOrders();
+            } catch (error) {
+                console.error('Error loading orders:', error);
+            }
+        }
+
+        // Render products grid
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">$${product.price}</div>
+                    <div class="product-details">
+                        <span class="inventory">Stock: ${product.inventory}</span>
+                        <span class="category">${product.category}</span>
+                    </div>
+                    <div class="order-form">
+                        <input type="number" class="quantity-input" value="1" min="1" max="${product.inventory}" id="qty-${product.id}">
+                        <button class="order-btn" onclick="createOrder('${product.id}')" ${product.inventory <= 0 ? 'disabled' : ''}>
+                            ${product.inventory <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render orders list
+        function renderOrders() {
+            const list = document.getElementById('orders-list');
+            if (orders.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #a0aec0;">No orders yet</p>';
+                return;
+            }
+
+            list.innerHTML = orders.slice(-10).reverse().map(order => `
+                <div class="order-item">
+                    <div class="order-header">
+                        <span class="order-id">Order #${order.id}</span>
+                        <span class="order-total">$${order.totalAmount}</span>
+                    </div>
+                    <div style="color: #a0aec0; font-size: 0.9rem;">
+                        Customer: ${order.customerId} | Items: ${order.items.length} | Status: ${order.status}
+                        ${order.discountCode ? `| Discount: ${order.discountCode}` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Create an order
+        async function createOrder(productId) {
+            const quantityInput = document.getElementById(`qty-${productId}`);
+            const quantity = parseInt(quantityInput.value);
+            
+            if (quantity <= 0) return;
+
+            const orderData = {
+                customerId: `user-${Date.now()}`,
+                items: [{
+                    productId: parseInt(productId),
+                    quantity: quantity
+                }]
+            };
+
+            try {
+                showStatus('Creating order...', 'loading');
+                const response = await fetch(`${API_BASE}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (response.ok) {
+                    showStatus('Order created successfully!', 'success');
+                    await refreshData();
+                } else {
+                    showStatus('Failed to create order', 'error');
+                }
+            } catch (error) {
+                console.error('Error creating order:', error);
+                showStatus('Error creating order', 'error');
+            }
+        }
+
+        // Trigger race condition by creating multiple concurrent orders
+        async function triggerRaceCondition() {
+            showStatus('🐛 Triggering race condition...', 'loading');
+            
+            const laptopProduct = products.find(p => p.name === 'Laptop');
+            if (!laptopProduct) {
+                showStatus('Laptop product not found', 'error');
+                return;
+            }
+
+            // Create 5 concurrent orders for 3 laptops each
+            const promises = [];
+            for (let i = 1; i <= 5; i++) {
+                const orderData = {
+                    customerId: `race-user-${i}`,
+                    items: [{
+                        productId: laptopProduct.id,
+                        quantity: 3
+                    }]
+                };
+
+                promises.push(
+                    fetch(`${API_BASE}/orders`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(orderData)
+                    })
+                );
+            }
+
+            try {
+                await Promise.all(promises);
+                showStatus('🐛 Race condition triggered! Check inventory levels.', 'error');
+                await refreshData();
+            } catch (error) {
+                console.error('Error triggering race condition:', error);
+                showStatus('Error triggering race condition', 'error');
+            }
+        }
+
+        // Trigger pricing bug with discount codes
+        async function triggerPricingBug() {
+            showStatus('🐛 Testing pricing bug...', 'loading');
+            
+            const orderData = {
+                customerId: `pricing-test-${Date.now()}`,
+                items: [{
+                    productId: 1, // Laptop
+                    quantity: 1
+                }],
+                discountCode: 'SAVE10'
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (response.ok) {
+                    showStatus('🐛 Pricing bug demonstrated! Check discount calculation.', 'error');
+                    await refreshData();
+                } else {
+                    showStatus('Failed to trigger pricing bug', 'error');
+                }
+            } catch (error) {
+                console.error('Error triggering pricing bug:', error);
+            }
+        }
+
+        // Clear all orders (restart application)
+        function clearOrders() {
+            showStatus('Restarting application to clear orders...', 'loading');
+            // In a real scenario, this would restart the app or clear data
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+
+        // Refresh all data
+        async function refreshData() {
+            showStatus('Refreshing data...', 'loading');
+            await loadProducts();
+            await loadOrders();
+            updateStats();
+            showStatus('Data refreshed', 'success');
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('total-products').textContent = products.length;
+            document.getElementById('total-orders').textContent = orders.length;
+            
+            const totalInventory = products.reduce((sum, p) => sum + p.inventory, 0);
+            document.getElementById('total-inventory').textContent = totalInventory;
+            
+            const revenue = orders.reduce((sum, o) => sum + parseFloat(o.totalAmount || 0), 0);
+            document.getElementById('revenue').textContent = `$${revenue.toFixed(2)}`;
+        }
+
+        // Show status messages
+        function showStatus(message, type = 'info') {
+            const statusContent = document.getElementById('status-content');
+            let icon = '';
+            switch(type) {
+                case 'loading': icon = '⏳'; break;
+                case 'success': icon = '✅'; break;
+                case 'error': icon = '❌'; break;
+                default: icon = 'ℹ️';
+            }
+            
+            statusContent.innerHTML = `<div style="color: ${type === 'error' ? '#ff6b6b' : type === 'success' ? '#4ade80' : '#00d4ff'}">${icon} ${message}</div>`;
+            
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    statusContent.innerHTML = `
+                        <div>✅ Application Running</div>
+                        <div>🔗 API Connected</div>
+                        <div>⚡ Lightrun Ready</div>
+                    `;
+                }, 3000);
+            }
+        }
+
+        // Initialize the app when page loads
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshData, 30000);
+    </script>
+</body>
+</html>
